@@ -21,7 +21,7 @@ CREATE TABLE VENDAS
   PRIMARY KEY(Id_Venda,Id_Pedido,Id_Item)
 );
 
---Tabela de Dimens„o de EndereÁos
+--Tabela de Dimens√£o de Endere√ßos
 CREATE TABLE Endereco 
 (
   CEP                   NUMBER PRIMARY KEY,
@@ -47,14 +47,14 @@ CREATE TABLE Cliente
   FOREIGN KEY(CEP) REFERENCES Endereco (CEP)
 );
 
---Tabela de Dimens„o Site
+--Tabela de Dimens√£o Site
 CREATE TABLE Site 
 (
   Id_Site               NUMBER PRIMARY KEY,
   Site                  VARCHAR2(200)
 );
 
---Tabela de Dimens„o de Ramo de Atividades
+--Tabela de Dimens√£o de Ramo de Atividades
 CREATE TABLE Ramo_Atividade 
 (
   Id_Ramo_Atividade     NUMBER PRIMARY KEY,
@@ -94,21 +94,21 @@ CREATE TABLE Parceiro_Item
   PRIMARY KEY(Id_Parceiro,Id_Item)
 );
 
---Tabela de Dimens„o de Forma de Pagamentos
+--Tabela de Dimens√£o de Forma de Pagamentos
 CREATE TABLE Forma_Pagamento 
 (
   Id_Forma_Pagamento    NUMBER PRIMARY KEY,
   Forma_Pagamento       VARCHAR2(200)
 );
 
---Tabela de Dimens„o Status dos Pedidos
+--Tabela de Dimens√£o Status dos Pedidos
 CREATE TABLE Status_Pedido 
 (
   Id_Status             NUMBER PRIMARY KEY,
   Status                VARCHAR2(200)
 );
 
---Tabela de Dimens„o de Itens
+--Tabela de Dimens√£o de Itens
 CREATE TABLE Item 
 (
   Id_Item               NUMBER PRIMARY KEY,
@@ -125,9 +125,9 @@ ALTER TABLE Parceiro_Item ADD FOREIGN KEY(Id_Parceiro)         REFERENCES Parcei
 ALTER TABLE Parceiro_Item ADD FOREIGN KEY(Id_Item)             REFERENCES Item (Id_Item);
 
 --------------------------------------------------------------------------------------------------------------------
-/********************************************** QUEST’ES DE NEG”CIO ***********************************************/
+/********************************************** QUEST√ïES DE NEG√ìCIO ***********************************************/
 --------------------------------------------------------------------------------------------------------------------
---qual seller que tem mais itens disponÌveis para venda em nossos sites?
+--qual seller que tem mais itens dispon√≠veis para venda em nossos sites?
 SELECT T2.NOME_FANTASIA,
        T1.QTDE_ITENS
 FROM(
@@ -151,7 +151,7 @@ FROM(
       SELECT ID_PARCEIRO,
              COUNT (DISTINCT ID_VENDA) AS QTDE_VENDAS
       FROM VENDAS
-      WHERE ID_STATUS  = 1 -- 1 REPRESENTA "APROVADO" NA TABELA DIMENS√O Status_Pedido
+      WHERE ID_STATUS  = 1 -- 1 REPRESENTA "APROVADO" NA TABELA DIMENS√ÉO Status_Pedido
       GROUP BY
             ID_PARCEIRO
       ORDER BY 2 DESC
@@ -167,7 +167,7 @@ FROM(
       SELECT ID_CLIENTE,
              COUNT (DISTINCT ID_VENDA) AS QTDE_VENDAS
       FROM VENDAS
-      WHERE ID_STATUS  = 1 -- 1 REPRESENTA "APROVADO" NA TABELA DIMENS√O Status_Pedido
+      WHERE ID_STATUS  = 1 -- 1 REPRESENTA "APROVADO" NA TABELA DIMENS√ÉO Status_Pedido
       GROUP BY
             ID_CLIENTE
       ORDER BY 2 DESC
@@ -176,17 +176,17 @@ LEFT JOIN CLIENTE              T2
 ON   T1.ID_CLIENTE = T2.ID_CLIENTE
 WHERE  ROWNUM = 1;
 
---qual È o total ($) de venda aprovada no ˙ltimo mÍs?
+--qual √© o total ($) de venda aprovada no √∫ltimo m√™s?
 SELECT 
        SUM (T1.QUANTIDADE*T2.VALOR_ITEM) AS VALOR_VENDAS
 FROM         VENDAS           T1
 INNER JOIN   PARCEIRO_ITEM    T2
 ON    T1.ID_PARCEIRO                      = T2.ID_PARCEIRO
 AND   T1.ID_ITEM                          = T2.ID_ITEM
-WHERE T1.ID_STATUS                        = 1 -- 1 REPRESENTA "APROVADO" NA TABELA DIMENS√O Status_Pedido 
+WHERE T1.ID_STATUS                        = 1 -- 1 REPRESENTA "APROVADO" NA TABELA DIMENS√ÉO Status_Pedido 
 AND   TO_CHAR(T1.DATA_APROVACAO,'RRRRMM') = TO_CHAR(ADD_MONTHS(SYSDATE,-1),'RRRRMM');
 
---qual seller que tem o maior ticket mÈdio? e o menor?
+--qual seller que tem o maior ticket m√©dio? e o menor?
 SELECT 'MAIOR TICKET MEDIO' AS TICKET,
        T2.NOME_FANTASIA,
        T1.TICKET_MEDIO
@@ -197,7 +197,7 @@ FROM     (
           INNER JOIN   PARCEIRO_ITEM    T2
           ON    T1.ID_PARCEIRO                      = T2.ID_PARCEIRO
           AND   T1.ID_ITEM                          = T2.ID_ITEM
-          WHERE T1.ID_STATUS                        = 1 -- 1 REPRESENTA "APROVADO" NA TABELA DIMENS√O Status_Pedido
+          WHERE T1.ID_STATUS                        = 1 -- 1 REPRESENTA "APROVADO" NA TABELA DIMENS√ÉO Status_Pedido
           GROUP BY
                  T1.ID_PARCEIRO
           ORDER BY 2 DESC
@@ -216,7 +216,7 @@ FROM     (
           INNER JOIN   PARCEIRO_ITEM     T2
           ON    T1.ID_PARCEIRO                      = T2.ID_PARCEIRO
           AND   T1.ID_ITEM                          = T2.ID_ITEM
-          WHERE T1.ID_STATUS                        = 1 -- 1 REPRESENTA "APROVADO" NA TABELA DIMENS√O Status_Pedido
+          WHERE T1.ID_STATUS                        = 1 -- 1 REPRESENTA "APROVADO" NA TABELA DIMENS√ÉO Status_Pedido
           GROUP BY
                  T1.ID_PARCEIRO
           ORDER BY 2
@@ -225,7 +225,7 @@ LEFT JOIN PARCEIRO                 T2
 ON   T1.ID_PARCEIRO = T2.ID_PARCEIRO
 WHERE ROWNUM = 1;
 
---qual o seller que mais atrasa para entregar no RJ nos ˙ltimos 30d?
+--qual o seller que mais atrasa para entregar no RJ nos √∫ltimos 30d?
 SELECT T2.NOME_FANTASIA,
        T1.PER_PEDIDOS PERCENTUAL_ATRASOS
 FROM (
@@ -260,7 +260,7 @@ FROM (SELECT T1.ID_PARCEIRO,
       AND   T1.ID_ITEM                          = T2.ID_ITEM
       INNER JOIN   PARCEIRO         T3
       ON    T2.ID_PARCEIRO                      = T3.ID_PARCEIRO
-      WHERE T1.ID_STATUS                        = 1 -- 1 REPRESENTA "APROVADO" NA TABELA DIMENS√O Status_Pedido
+      WHERE T1.ID_STATUS                        = 1 -- 1 REPRESENTA "APROVADO" NA TABELA DIMENS√ÉO Status_Pedido
       GROUP BY T1.ID_PARCEIRO
       ORDER BY 2 DESC
       )                            T1
@@ -269,11 +269,11 @@ ON   T1.ID_PARCEIRO = T2.ID_PARCEIRO
 WHERE ROWNUM = 1;
 
 --Tarefa extra
---Se suas tabelas tiverem bilhıes de registros, o que vocÍ faria para a consulta de pedidos e itens de um parceiro n„o ficar lenta?
+--Se suas tabelas tiverem bilh√µes de registros, o que voc√™ faria para a consulta de pedidos e itens de um parceiro n√£o ficar lenta?
 /*
 RESPOSTA:
 
-CriaÁ„o de Õndice nos campos mais utilizados como filtro ou join, por exemplo, campos de datas e ID's.
-Particionamento da tabela VENDAS por Data de Inclus„o.
+Cria√ß√£o de √çndice nos campos mais utilizados como filtro ou join, por exemplo, campos de datas e ID's.
+Particionamento da tabela VENDAS por ano e m√™s a partir do campo Data de Inclus√£o.
 
 */
